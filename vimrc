@@ -1,6 +1,8 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
+set backspace=indent,eol,start
+
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -11,14 +13,18 @@ Plugin 'rking/ag.vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'scrooloose/nerdtree'
+Plugin 'ap/vim-css-color'
+Plugin 'chrisbra/NrrwRgn'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'Shutnik/jshint2.vim'
+Plugin 'krisajenkins/vim-projectlocal'
 
 " Autocmpletion plugin. After install, must execute:
 " sudo apt-get install build-essential cmake
 " sudo apt-get install python-dev
 " cd ~/.vim/bundle/YouCompleteMe
 " ./install.py --tern-completer
-Plugin 'Valloric/YouCompleteMe'
-
+"Plugin 'Valloric/YouCompleteMe'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -71,6 +77,10 @@ set ruler
 set laststatus=2
 set showtabline=2
 "set foldmethod=syntax
+set tabpagemax=30
+
+set exrc
+set secure
 
 au BufRead,BufNewFile *.handlebars,*.hbs set ft=html syntax=handlebars
 au BufRead,BufNewFile *.tpl set filetype=smarty
@@ -103,3 +113,12 @@ autocmd BufWritePre * StripWhitespace
 
 set lazyredraw
 
+let g:syntastic_html_tidy_ignore_errors=[
+    \'proprietary attribute ',
+    \'trimming empty <',
+    \'is not recognized!',
+    \'discarding unexpected',
+    \'unescaped &'
+\]
+
+"let g:syntastic_html_tidy_ignore_errors=[' proprietary attribute ' ,'trimming empty <', 'unescaped &' , 'lacks \'action', 'is not recognized!', 'discarding unexpected']
