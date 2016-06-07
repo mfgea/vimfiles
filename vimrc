@@ -18,6 +18,7 @@ Plugin 'chrisbra/NrrwRgn'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'Shutnik/jshint2.vim'
 Plugin 'krisajenkins/vim-projectlocal'
+Plugin 'ctrlpvim/ctrlp.vim'
 
 " Autocmpletion plugin. After install, must execute:
 " sudo apt-get install build-essential cmake
@@ -70,6 +71,7 @@ set hidden		" Hide buffers when they are abandoned
 set mouse=i		" Enable mouse usage (all modes)
 set expandtab
 set tabstop=4
+set softtabstop=4
 set shiftwidth=4
 set autoindent
 set smartindent
@@ -78,6 +80,14 @@ set laststatus=2
 set showtabline=2
 "set foldmethod=syntax
 set tabpagemax=30
+
+set encoding=utf-8
+set fileencoding=utf-8
+set ff=unix
+set eol
+
+" remove trailing whitespace
+autocmd FileType *,!md autocmd BufWritePre <buffer> :%s/\s\+$//e
 
 set exrc
 set secure
@@ -93,6 +103,7 @@ set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
+let g:syntastic_auto_jump = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 1
 let g:syntastic_aggregate_errors = 1
@@ -118,7 +129,16 @@ let g:syntastic_html_tidy_ignore_errors=[
     \'trimming empty <',
     \'is not recognized!',
     \'discarding unexpected',
-    \'unescaped &'
+    \'unescaped &',
+    \'<form> lacks "action"'
 \]
 
-"let g:syntastic_html_tidy_ignore_errors=[' proprietary attribute ' ,'trimming empty <', 'unescaped &' , 'lacks \'action', 'is not recognized!', 'discarding unexpected']
+function! HasConfigFile(file, dir)
+    return findfile(a:file, escape(a:dir, ' ') . ';') !=# ''
+endfunction
+
+autocmd BufNewFile,BufReadPre *.js  let b:syntastic_checkers =
+    \ HasConfigFile('.eslintrc', expand('<amatch>:h')) ? ['eslint'] :
+    \ HasConfigFile('.jshintrc', expand('<amatch>:h')) ? ['jshint'] :
+    \     ['standard']
+
