@@ -19,6 +19,7 @@ Plugin 'terryma/vim-multiple-cursors'
 Plugin 'Shutnik/jshint2.vim'
 Plugin 'krisajenkins/vim-projectlocal'
 Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'tpope/vim-abolish'
 
 " Autocmpletion plugin. After install, must execute:
 " sudo apt-get install build-essential cmake
@@ -70,9 +71,9 @@ set autowrite		" Automatically save before commands like :next and :make
 set hidden		" Hide buffers when they are abandoned
 set mouse=i		" Enable mouse usage (all modes)
 set expandtab
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 set autoindent
 set smartindent
 set ruler
@@ -130,7 +131,9 @@ let g:syntastic_html_tidy_ignore_errors=[
     \'is not recognized!',
     \'discarding unexpected',
     \'unescaped &',
-    \'<form> lacks "action"'
+    \'<form> lacks "action"',
+    \'has invalid value',
+    \'escaping malformed URI'
 \]
 
 function! HasConfigFile(file, dir)
@@ -138,7 +141,7 @@ function! HasConfigFile(file, dir)
 endfunction
 
 autocmd BufNewFile,BufReadPre *.js  let b:syntastic_checkers =
-    \ HasConfigFile('.eslintrc', expand('<amatch>:h')) ? ['eslint'] :
     \ HasConfigFile('.jshintrc', expand('<amatch>:h')) ? ['jshint'] :
+    \ HasConfigFile('.eslintrc', expand('<amatch>:h')) ? ['eslint'] :
     \     ['standard']
 
