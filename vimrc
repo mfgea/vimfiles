@@ -11,6 +11,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'scrooloose/syntastic'
 Plugin 'rking/ag.vim'
 Plugin 'pangloss/vim-javascript'
+Plugin 'mxw/vim-jsx'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'scrooloose/nerdtree'
 Plugin 'ap/vim-css-color'
@@ -20,6 +21,9 @@ Plugin 'Shutnik/jshint2.vim'
 Plugin 'krisajenkins/vim-projectlocal'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tpope/vim-abolish'
+Plugin 'tpope/vim-endwise'
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'tpope/vim-rails'
 
 " Autocmpletion plugin. After install, must execute:
 " sudo apt-get install build-essential cmake
@@ -77,7 +81,6 @@ set shiftwidth=2
 set autoindent
 set smartindent
 set ruler
-set laststatus=2
 set showtabline=2
 "set foldmethod=syntax
 set tabpagemax=30
@@ -97,6 +100,22 @@ au BufRead,BufNewFile *.handlebars,*.hbs set ft=html syntax=handlebars
 au BufRead,BufNewFile *.tpl set filetype=smarty
 au Filetype smarty exec('set dictionary=~/.vim/syntax/smarty.vim')
 au Filetype smarty set complete+=k
+
+"define 3 custom highlight groups
+hi User1 ctermbg=green ctermfg=red   guibg=green guifg=red
+hi User2 ctermbg=red   ctermfg=blue  guibg=red   guifg=blue
+hi User3 ctermbg=blue  ctermfg=green guibg=blue  guifg=green
+
+set laststatus=2
+set statusline=
+set statusline+=%1*  "switch to User1 highlight
+set statusline+=%F   "full filename
+set statusline+=%2*  "switch to User2 highlight
+set statusline+=%y   "filetype
+set statusline+=%3*  "switch to User3 highlight
+set statusline+=%l   "line number
+set statusline+=%*   "switch back to statusline highlight
+set statusline+=%P   "percentage thru file
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -133,14 +152,19 @@ let g:syntastic_html_tidy_ignore_errors=[
     \'unescaped &',
     \'<form> lacks "action"',
     \'has invalid value',
-    \'escaping malformed URI'
+    \'escaping malformed URI',
+    \'letter not allowed here',
+    \'allowed in <body>',
+    \'inserting implicit <table>',
+    \'missing </table>',
+    \'missing <td>'
 \]
 
 function! HasConfigFile(file, dir)
     return findfile(a:file, escape(a:dir, ' ') . ';') !=# ''
 endfunction
 
-autocmd BufNewFile,BufReadPre *.js  let b:syntastic_checkers =
+autocmd BufNewFile,BufReadPre *.{js,jsx}  let b:syntastic_checkers =
     \ HasConfigFile('.jshintrc', expand('<amatch>:h')) ? ['jshint'] :
     \ HasConfigFile('.eslintrc', expand('<amatch>:h')) ? ['eslint'] :
     \     ['standard']
