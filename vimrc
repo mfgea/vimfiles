@@ -24,6 +24,7 @@ Plugin 'tpope/vim-abolish'
 Plugin 'tpope/vim-endwise'
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'tpope/vim-rails'
+Plugin 'leafgarland/typescript-vim'
 
 " Autocmpletion plugin. After install, must execute:
 " sudo apt-get install build-essential cmake
@@ -84,6 +85,7 @@ set ruler
 set showtabline=2
 "set foldmethod=syntax
 set tabpagemax=30
+setlocal indentkeys+=0.
 
 set encoding=utf-8
 set fileencoding=utf-8
@@ -140,6 +142,8 @@ let g:syntastic_enable_signs=0
 " because it is slow if there are a lot of errors.
 let g:syntastic_echo_current_error=0
 
+let g:syntastic_typescript_tsc_fname = ''
+
 autocmd BufWritePre * StripWhitespace
 
 set lazyredraw
@@ -157,7 +161,10 @@ let g:syntastic_html_tidy_ignore_errors=[
     \'allowed in <body>',
     \'inserting implicit <table>',
     \'missing </table>',
-    \'missing <td>'
+    \'missing <td>',
+    \'attribute name',
+    \'lacks value',
+    \'plain text'
 \]
 
 function! HasConfigFile(file, dir)
